@@ -8,7 +8,7 @@ class S3Object(Response):
 
     client = boto3.client('s3')
 
-    def __init__(self, bucket, key):
+    def __init__(self, bucket: str, key: str):
         try:
             obj = self.client(Bucket=bucket, Key=key)
         except ClientError as e:

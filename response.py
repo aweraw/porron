@@ -46,7 +46,7 @@ class Response:
         self.headers[header] = value
         return value
 
-    def set_content_type(self, mime_type):
+    def set_content_type(self, mime_type='application/octet-stream'):
         self.headers['Content-Type'] = mime_type
         if mime_type not in text_mimetypes:
             self.is_binary = True

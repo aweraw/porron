@@ -5,12 +5,7 @@ class HTTPBase(Exception):
 
     def __init__(self, message=''):
         super(HTTPBase, self).__init__(message)
-
-
-class HTTPSuccess(HTTPBase):
-
-    def __init__(self, response):
-        self.response = response
+        self.response = None
 
 
 class HTTPRedirect(HTTPBase):
@@ -29,5 +24,5 @@ class HTTPFail(HTTPBase):
 
 class HTTPError(HTTPBase):
     
-    def __init__(self, message):
-        self.response = Response('Error: ' + message, 500)
+    def __init__(self, message, code=500):
+        self.response = Response('Error: ' + message, code)

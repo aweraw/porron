@@ -1,4 +1,5 @@
-from response_models import HTTPError, HTTPSuccess
+from typing import Any, Callable
+from response_models import HTTPError
 from response import Response
 
 
@@ -8,7 +9,7 @@ class Router:
         self.routes = dict()
 
 
-    def dispatch(self, event):
+    def dispatch(self, event: dict) -> Any:
         if event['resource'] not in self.routes:
             raise HTTPError("No route for {}".format(event['resource']))
 
@@ -21,24 +22,17 @@ class Router:
         return data
 
 
-    def add_route(self, resource, func):
+    def add_route(self, resource: str, func: Callable) -> None:
         if resource in self.routes:
             raise HTTPError("Too many routes for {}".format(resource))
 
         self.routes[resource] = func
 
 
-    def handle(self, resource):
+    def handle(self, resource: str) -> Callable[[Callable], Callable]:
 
-        def decorator(func):
+        def decorator(func: Callable):
             self.add_route(resource, func)
-
-            def wrapper(*args, **kwargs):
-                response = func(*args, **kwargs)
-                if type(response) is not Response:
-                    raise HTTPError("handler did not return response object")
-                raise HTTPSuccess(response)
-
-            return wrapper
+            return func
 
         return decorator
