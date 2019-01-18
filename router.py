@@ -1,5 +1,5 @@
 from typing import Any, Callable
-from response_models import HTTPError
+from response_models import Error
 from response import Response
 
 
@@ -11,7 +11,7 @@ class Router:
 
     def dispatch(self, event: dict) -> Any:
         if event['resource'] not in self.routes:
-            raise HTTPError("No route for {}".format(event['resource']))
+            raise Error("No route for {}".format(event['resource']))
 
         self.routes[event['resource']].__globals__['_event'] = event
         if event.get("pathParameters"):
@@ -24,7 +24,7 @@ class Router:
 
     def add_route(self, resource: str, func: Callable) -> None:
         if resource in self.routes:
-            raise HTTPError("Too many routes for {}".format(resource))
+            raise Error("Too many routes for {}".format(resource))
 
         self.routes[resource] = func
 

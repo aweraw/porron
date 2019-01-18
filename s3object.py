@@ -2,7 +2,7 @@ import boto3
 from botocore.exceptions import ClientError
 
 from response import Response
-from response_models import HTTPFail
+from response_models import Fail
 
 class S3Object(Response):
 
@@ -14,7 +14,7 @@ class S3Object(Response):
         except ClientError as e:
             message = e.response['Error']['Code']
             code = e.response['HTTPStatusCode']
-            raise HTTPFail("{}: {}/{}".format(message, bucket, key), code)
+            raise Fail("{}: {}/{}".format(message, bucket, key), code)
 
         super(S3Object, self).__init__(obj['Body'].read())
 

@@ -24,7 +24,4 @@ class RequestHandler:
             else:
                 response = data
 
-            return response
-
-    def __call__(self, event, context):
-        return self.process(event, context)
+        return response

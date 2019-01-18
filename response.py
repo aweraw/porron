@@ -22,6 +22,7 @@ text_mimetypes = {
     "text/xml"
 }
 
+
 class Response:
 
     def __init__(self, body_data='', code=200):
@@ -31,23 +32,22 @@ class Response:
         self.headers['Content-Type'] = 'text/plain'
         self.is_binary = False
 
+
     def __repr__(self):
 
-        repr = {
+        return {
             'body': (base64.encodebytes(self.body) if self.is_binary else self.body),
             'statusCode': self.status_code,
             'headers': self.headers,
             'isBase64Encoded': self.is_binary
         }
 
-        return json.dumps(repr)
 
     def add_header(self, header, value):
         self.headers[header] = value
-        return value
+
 
     def set_content_type(self, mime_type='application/octet-stream'):
-        self.headers['Content-Type'] = mime_type
+        self.add_header('Content-Type', mime_type)
         if mime_type not in text_mimetypes:
             self.is_binary = True
-        return mime_type
