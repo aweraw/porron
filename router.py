@@ -1,6 +1,5 @@
 from typing import Any, Callable
-from response_models import Error
-from response import Response
+from response_models import Response, Error
 
 
 class Router:

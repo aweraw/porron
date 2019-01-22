@@ -1,8 +1,7 @@
 import boto3
 from botocore.exceptions import ClientError
 
-from response import Response
-from response_models import Fail
+from response_models import Response, Fail
 
 class S3Object(Response):
 
