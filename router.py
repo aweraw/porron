@@ -16,7 +16,7 @@ class Router:
         if event.get("pathParameters"):
             data = self.routes[event['resource']](**event['pathParameters'])
         else:
-            data = self.routes[event['resource']]()
+            data = self.routes[event['resource']](event)
 
         return data
 

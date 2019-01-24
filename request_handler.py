@@ -33,10 +33,12 @@ class RequestHandler:
 
     def process(self, event, context):
 
+        if event.get('type') == 'TOKEN':
+            event['resource'] = 'authorizer'
+
         try:
             event = self.process_pipeline(self.event_pipeline, event)
-            data  = self.router.dispatch(event)
-            data  = self.process_pipeline(self.data_pipeline, data)
+            data  = self.process_pipeline(self.data_pipeline, self.router.dispatch(event))
         except HTTPBase as e:
             response = e.response
         else:

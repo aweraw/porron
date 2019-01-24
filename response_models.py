@@ -1,7 +1,11 @@
-from time import asctime, gmtime
-
 import json
 import base64
+
+from time import asctime, gmtime
+
+import boto3
+
+from botocore.exceptions import ClientError
 
 text_mimetypes = {
     "application/javascript",
@@ -53,6 +57,50 @@ class Response:
         self.add_header('Content-Type', mime_type)
         if mime_type not in text_mimetypes:
             self.is_binary = True
+
+
+class S3Response(Response):
+
+    client = boto3.client('s3')
+
+    def __init__(self, bucket: str, key: str):
+        try:
+            obj = self.client(Bucket=bucket, Key=key)
+        except ClientError as e:
+            message = e.response['Error']['Code']
+            code = e.response['HTTPStatusCode']
+            raise Fail("{}: {}/{}".format(message, bucket, key), code)
+
+        Response.__init__(self, obj['Body'].read())
+
+        self.set_content_type(obj['ContentType'])
+
+
+class AuthorizerPolicy(Response):
+
+    def __init__(self, effect, resource):
+        self.effect = effect
+        self.resource = resource
+
+    
+    def add_header(self, header, value):
+        pass
+
+
+    def set_content_type(self, mime_type=None):
+        pass
+
+
+    def __repr__(self):
+
+        return {
+            'Version': '2012-10-17',
+            'Statement': [{
+                'Action': 'execute-api:Invoke',
+                'Effect': self.effect.capitalize(),
+                'Resource': self.resource
+            }]
+        }
 
 
 timestamp = lambda: asctime(gmtime())
