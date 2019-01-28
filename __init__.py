@@ -1,5 +1,4 @@
-from s3object import S3Object
-from response_models import Response, Redirect, Fail, Error
+from response_models import Response, S3Response, Redirect, Fail, Error
 from router import Router
 from request_handler import RequestHandler
 
