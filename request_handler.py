@@ -22,14 +22,18 @@ class RequestHandler:
 
         self.register_data_processor(convert_to_response)
 
+
     def register_event_processor(self, func):
         self.event_pipeline.append(func)
+
 
     def register_data_processor(self, func):
         self.data_pipeline.append(func)
 
+
     def process_pipeline(self, pipeline, obj):
         return reduce(lambda ob, fu: fu(ob), pipeline, obj)
+
 
     def process(self, event, context):
 
@@ -44,4 +48,4 @@ class RequestHandler:
         else:
             response = data
 
-        return response
+        return response.gw_dict()

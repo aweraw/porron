@@ -39,14 +39,21 @@ class Response:
         self.is_binary = False
 
 
-    def __repr__(self):
-
-        return json.dumps({
+    def gw_dict(self):
+        return {
             'body': (base64.encodebytes(self.body) if self.is_binary else self.body),
             'statusCode': self.status_code,
             'headers': self.headers,
             'isBase64Encoded': self.is_binary
-        })
+        }
+
+
+    def to_json(self):
+        return json.dumps(self.gw_dict())
+
+
+    def __repr__(self):
+        return self.to_json()
 
 
     def add_header(self, header, value):
@@ -91,16 +98,16 @@ class AuthorizerPolicy(Response):
         pass
 
 
-    def __repr__(self):
-
-        return json.dumps({
+    def gw_dict(self):
+        return {
             'Version': '2012-10-17',
             'Statement': [{
                 'Action': 'execute-api:Invoke',
                 'Effect': self.effect.capitalize(),
                 'Resource': self.resource
             }]
-        })
+        }
+
 
 
 timestamp = lambda: asctime(gmtime())
