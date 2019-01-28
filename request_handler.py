@@ -3,8 +3,8 @@ import json
 from typing import Type
 from functools import reduce
 
-from router import Router
-from response_models import Response, HTTPBase
+from .router import Router
+from .response_models import Response, HTTPBase
 
 
 def convert_to_response(data):
