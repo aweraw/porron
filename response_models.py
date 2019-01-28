@@ -41,12 +41,12 @@ class Response:
 
     def __repr__(self):
 
-        return {
+        return json.dumps({
             'body': (base64.encodebytes(self.body) if self.is_binary else self.body),
             'statusCode': self.status_code,
             'headers': self.headers,
             'isBase64Encoded': self.is_binary
-        }
+        })
 
 
     def add_header(self, header, value):
@@ -93,14 +93,14 @@ class AuthorizerPolicy(Response):
 
     def __repr__(self):
 
-        return {
+        return json.dumps({
             'Version': '2012-10-17',
             'Statement': [{
                 'Action': 'execute-api:Invoke',
                 'Effect': self.effect.capitalize(),
                 'Resource': self.resource
             }]
-        }
+        })
 
 
 timestamp = lambda: asctime(gmtime())
