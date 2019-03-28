@@ -42,7 +42,7 @@ class RequestHandler:
 
         try:
             event = self.process_pipeline(self.event_pipeline, event)
-            data  = self.process_pipeline(self.data_pipeline, self.router.dispatch(event))
+            data  = self.process_pipeline(self.data_pipeline, self.router.dispatch(event, context))
         except HTTPBase as e:
             response = e.response
         else:

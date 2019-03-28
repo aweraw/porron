@@ -9,12 +9,13 @@ class Router:
         self.routes = dict()
 
 
-    def dispatch(self, event: dict) -> Any:
+    def dispatch(self, event, context) -> Any:
         if event['resource'] not in self.routes:
             raise Error("No route for {}".format(event['resource']))
 
-        self.routes[event['resource']].__globals__['_event'] = event
+        self.routes[event['resource']].__globals__['_context'] = context
         if event.get("pathParameters"):
+            self.routes[event['resource']].__globals__['_event'] = event
             data = self.routes[event['resource']](**event['pathParameters'])
         else:
             data = self.routes[event['resource']](event)
