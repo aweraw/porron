@@ -3,23 +3,23 @@ from porron import Porron
 interface = Porron()
 
 people = {
-    1: "Aidan Williams",
-    2: "Matt Ogle",
-    3: "Pat Robinson",
-    4: "Mike Pearson"
+    1: "Cthulhu",
+    2: "Godzilla",
+    3: "King Kong",
+    4: "Thanos"
 }
 
 cities = {
-    1: "Melbourne",
-    2: "Russell Island",
-    3: "Wangaratta"
+    1: "Ocean",
+    2: "Jungle",
+    3: "Space"
 }
 
 residencies = {
-    1: 2,
+    1: 1,
     2: 1,
-    3: 3,
-    4: 1
+    3: 2,
+    4: 3
 }
 
 @interface.handle('/people')
@@ -33,7 +33,7 @@ def show_person(key_id: int):
     return people[key_id]
 
 @interface.handle('/cities')
-def list_cities() -> list:
+def list_cities():
     """List all cities"""
     return list(cities.items())
 
