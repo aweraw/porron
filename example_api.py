@@ -1,15 +1,13 @@
 from porron import Porron
 
-interface = Porron()
-
-people = {
+beings = {
     1: "Cthulhu",
     2: "Godzilla",
     3: "King Kong",
     4: "Thanos"
 }
 
-cities = {
+locales = {
     1: "Ocean",
     2: "Jungle",
     3: "Space"
@@ -22,30 +20,32 @@ residencies = {
     4: 3
 }
 
-@interface.handle('/people')
-def list_people():
-    """List all people"""
-    return list(people.items())
+interface = Porron()
 
-@interface.handle('/people/{key_id}')
-def show_person(key_id: int):
-    """Get a person by ID"""
-    return people[key_id]
+@interface.handle('/beings')
+def list_beings():
+    """List all beings"""
+    return list(beings.items())
 
-@interface.handle('/cities')
-def list_cities():
-    """List all cities"""
-    return list(cities.items())
+@interface.handle('/beings/{key_id}')
+def show_being(key_id: int):
+    """Get a being by ID"""
+    return beings[key_id]
 
-@interface.handle('/cities/{key_id}')
-def show_city(key_id: int):
-    """Get a city by ID"""
-    return cities[key_id]
+@interface.handle('/locales')
+def list_locales():
+    """List all locales"""
+    return list(locales.items())
+
+@interface.handle('/locales/{key_id}')
+def show_locale(key_id: int):
+    """Get a locale by ID"""
+    return locales[key_id]
 
 @interface.handle('/addresses')
 def address_book():
-    """List all people and cities cities they live in"""
-    return [(people[k], cities[v]) for k,v in residencies.items()]
+    """List all beings and locales they live in"""
+    return [(beings[k], locales[v]) for k,v in residencies.items()]
 
 @interface.handle('/addresses/{offset}/{limit}')
 def address_list(offset: int, limit: int):
